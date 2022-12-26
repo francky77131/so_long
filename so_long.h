@@ -6,14 +6,58 @@
 /*   By: frgojard <frgojard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:00:00 by frgojard          #+#    #+#             */
-/*   Updated: 2022/12/21 19:08:53 by frgojard         ###   ########.fr       */
+/*   Updated: 2022/12/26 14:21:18 by frgojard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SO_LONG_H
 # define SO_LONG_H
-# include "./libft/libft.h"
 # include "./minilibx-linux/mlx.h"
+# include <stdio.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <ctype.h>
+# include <string.h>
+# include <stddef.h>
+# include <sys/stat.h>
+# include <fcntl.h>
+
+
+
+typedef struct s_vars 
+{
+	char	**map;
+	char	*mapline;
+	int		begin_x;
+	int		begin_y;
+	int		size_x;
+	int		size_y;
+}	t_vars;
+
+/*GNL*/
+size_t	ft_strlen(const char *s);
+int	ft_start(char *stash, int c);
+int	ft_end(char *stash);
+char	*ft_process(char *buf, int readsize, char *line, int fd);
+char	*get_next_line(int fd);
+char	*ft_strdup_gnl(char *s);
+char	*ft_strjoin_gnl(char *s1, char *s2);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+void	ft_stock(char *line, char *buf);
+char	*ft_strchr(const char *s, int c);
+
+/*So_long*/
+char	*ft_strjoin(char *s1, char *s2);
+
+/*Split*/
+size_t	count_words(const char *s, char c);
+size_t	sizeof_word(const char *s, char c);
+char	**free_tab(char **tab, size_t size);
+char	**ft_split(const char *s, char c);
+void	free_split(char **args);
+
+/*Ft_strjoin*/
+char	*ft_strjoin(char *s1, char *s2);
 
 
 # define RED     "\x1b[31;1m"

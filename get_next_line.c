@@ -6,11 +6,11 @@
 /*   By: frgojard <frgojard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 12:52:02 by frgojard          #+#    #+#             */
-/*   Updated: 2022/09/13 14:25:59 by frgojard         ###   ########.fr       */
+/*   Updated: 2022/12/26 10:04:22 by frgojard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "so_long.h"
 
 #ifndef BUFFER_SIZE
 # define BUFFER_SIZE 5
@@ -92,22 +92,22 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-int	main(void)
-{
-	int		fd;
-	char	*str = NULL;
-	int		i;
+// int	main(void)
+// {
+// 	int		fd;
+// 	char	*str = NULL;
+// 	int		i;
 
-	i = 0;
-	fd = open("test", O_RDONLY);
-	if (fd == -1)
-		return (1);
-	while (i++ < 10)
-	{
-		str = get_next_line(fd);
-		printf("ligne %d: %s", i, str);
-		free(str);
-	}	
-	close(fd);
-	return (0);
-}
+// 	i = 0;
+// 	fd = open("test", O_RDONLY);
+// 	if (fd == -1)
+// 		return (1);
+// 	while (i++ < 10)
+// 	{
+// 		str = get_next_line(fd);
+// 		printf("ligne %d: %s", i, str);
+// 		free(str);
+// 	}	
+// 	close(fd);
+// 	return (0);
+// }
