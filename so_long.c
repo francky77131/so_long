@@ -173,23 +173,64 @@ int	check_shape(t_vars *vars)
 
 void	fill(t_vars *vars, int x, int y)
 {
-	if (vars->map[y][x] == 'P')
-		vars->map[y][x] = '0';
-	if (vars->map[y][x] == '0')
+	if (vars->cpmap[y][x] == '0' || vars->cpmap[y][x] == 'P' || vars->cpmap[y][x] == 'C' || vars->cpmap[y][x] == 'E')
 	{
-		vars->map[y][x] = '0';
+		vars->cpmap[y][x] = 'o';
 		fill(vars, x + 1, y);
 		fill(vars, x - 1, y);
 		fill(vars, x, y + 1);
 		fill(vars, x, y - 1);
 	}
-
-	
 }
 
-void	flood_fill(t_vars *vars)
+char **cpmap(char **map)
 {
+  int i;
+  char **cpmap;
+
+  i = 0;
+  cpmap = malloc(sizeof(char *) * (ft_strlen(map[0]) + 1));
+  while (map[i] != NULL)
+  {
+    cpmap[i] = strdup(map[i]);     //ne pas oublier de mettre mon strdup !!!!!
+	i++;
+  }
+  cpmap[i] = NULL;
+  return (cpmap);
+}
+
+int search_path(char **map)
+{
+	int	y;
+	int x;
+
+	y = 0;
+	x = 0;
+	while (map[y])
+	{
+		x = 0;
+		while (map[y][x])
+		{
+			if (map[y][x] != '1' && map[y][x] != 'o' )
+				return (1);
+			x++;
+		}
+		y++;
+	}
+	return (0);
+}
+
+int	flood_fill(t_vars *vars)
+{
+	vars->cpmap = cpmap(vars->map);
 	fill(vars, vars->begin_x, vars->begin_y);
+	if (search_path(vars->cpmap) == 1)
+	{
+		free_split(vars->cpmap);
+		return (1);
+	}
+	free_split(vars->cpmap);
+	return (0);
 }
 
 int	check_map(t_vars *vars)
@@ -204,31 +245,10 @@ int	check_map(t_vars *vars)
 		return (write (2, "Error : you need at least one collectible\n", 43), 1);
 	if (check_exit(vars) == 1)
 		return (write (2, "Error : more or less than 1 exit\n", 34), 1);
-	flood_fill(vars);
-//	if (flood_fill(vars) == 1)
-//	 	return (write (2, "Error : false exit path\n", 25), 1);
+	if (flood_fill(vars) == 1)
+	 	return (write (2, "Error : false exit path\n", 25), 1);
 	return (0);
 }
-
-// void	init_size(t_vars *vars)
-// {
-// 	int	lenx;
-// 	int	leny;
-
-// 	leny = 0;
-// 	lenx = 0;
-// 	while (vars->map[leny])
-// 		leny++;
-// 	while (vars->map[0][lenx])
-// 		lenx++;
-// 	vars->size_x = lenx;
-// 	vars->size_y = leny;
-// }
-
-// void	vars_init(t_vars *vars)
-// {
-// 	init_size(vars);
-// }
 
 int main(int ac, char **av)
 {
@@ -252,8 +272,12 @@ int main(int ac, char **av)
 		close(fd);
 		return (0);	
 	}
-	printf("%s\n", vars->mapline);
-	//vars_init(vars);
+	int x = 0;
+	while (vars->map[x])
+	{
+		printf("%s\n", vars->map[x]);
+		x++;
+	}
 	free(vars->mapline);
 	free_split(vars->map);
 	free(vars);

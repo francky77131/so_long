@@ -27,6 +27,7 @@
 typedef struct s_vars 
 {
 	char	**map;
+	char	**cpmap;
 	char	*mapline;
 	int		begin_x;
 	int		begin_y;
