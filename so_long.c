@@ -51,7 +51,11 @@ int	check_player(t_vars *vars)
 		while (vars->map[y][x])
 		{
 			if (vars->map[y][x] == 'P')
+			{
+				vars->begin_y = y;
+				vars->begin_x = x;
 				player++;
+			}
 			x++;
 		}
 		y++;
@@ -167,29 +171,26 @@ int	check_shape(t_vars *vars)
 	return (0);
 }
 
-// typedef struct	s_point
-// {
-// 	int			x;
-// 	int			y;
-// }				t_point;
+void	fill(t_vars *vars, int x, int y)
+{
+	if (vars->map[y][x] == 'P')
+		vars->map[y][x] = '0';
+	if (vars->map[y][x] == '0')
+	{
+		vars->map[y][x] = '0';
+		fill(vars, x + 1, y);
+		fill(vars, x - 1, y);
+		fill(vars, x, y + 1);
+		fill(vars, x, y - 1);
+	}
 
-// void	fill(char **tab, t_point size, t_point cur, char to_fill)
-// {
-// 	if (cur.y < 0 || cur.y >= size.y || cur.x < 0 || cur.x >= size.x
-// 		|| tab[cur.y][cur.x] != to_fill)
-// 		return;
+	
+}
 
-// 	tab[cur.y][cur.x] = 'F';
-// 	fill(tab, size, (t_point){cur.x - 1, cur.y}, to_fill);
-// 	fill(tab, size, (t_point){cur.x + 1, cur.y}, to_fill);
-// 	fill(tab, size, (t_point){cur.x, cur.y - 1}, to_fill);
-// 	fill(tab, size, (t_point){cur.x, cur.y + 1}, to_fill);
-// }
-
-// void	flood_fill(char **tab, t_point size, t_point begin)
-// {
-// 	fill(tab, size, begin, tab[begin.y][begin.x]);
-// }
+void	flood_fill(t_vars *vars)
+{
+	fill(vars, vars->begin_x, vars->begin_y);
+}
 
 int	check_map(t_vars *vars)
 {
@@ -203,30 +204,31 @@ int	check_map(t_vars *vars)
 		return (write (2, "Error : you need at least one collectible\n", 43), 1);
 	if (check_exit(vars) == 1)
 		return (write (2, "Error : more or less than 1 exit\n", 34), 1);
-	// if (flood_fill(vars.) == 1)
-	// 	return (write (2, "Error : false exit path\n", 25), 1);
+	flood_fill(vars);
+//	if (flood_fill(vars) == 1)
+//	 	return (write (2, "Error : false exit path\n", 25), 1);
 	return (0);
 }
 
-void	init_size(t_vars *vars)
-{
-	int	lenx;
-	int	leny;
+// void	init_size(t_vars *vars)
+// {
+// 	int	lenx;
+// 	int	leny;
 
-	leny = 0;
-	lenx = 0;
-	while (vars->map[leny])
-		leny++;
-	while (vars->map[0][lenx])
-		lenx++;
-	vars->size_x = lenx;
-	vars->size_y = leny;
-}
+// 	leny = 0;
+// 	lenx = 0;
+// 	while (vars->map[leny])
+// 		leny++;
+// 	while (vars->map[0][lenx])
+// 		lenx++;
+// 	vars->size_x = lenx;
+// 	vars->size_y = leny;
+// }
 
-void	vars_init(t_vars *vars)
-{
-	init_size(vars);
-}
+// void	vars_init(t_vars *vars)
+// {
+// 	init_size(vars);
+// }
 
 int main(int ac, char **av)
 {
@@ -250,7 +252,8 @@ int main(int ac, char **av)
 		close(fd);
 		return (0);	
 	}
-	vars_init(vars);
+	printf("%s\n", vars->mapline);
+	//vars_init(vars);
 	free(vars->mapline);
 	free_split(vars->map);
 	free(vars);

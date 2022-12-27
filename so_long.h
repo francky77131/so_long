@@ -30,8 +30,6 @@ typedef struct s_vars
 	char	*mapline;
 	int		begin_x;
 	int		begin_y;
-	int		size_x;
-	int		size_y;
 }	t_vars;
 
 /*GNL*/

@@ -14,7 +14,7 @@
 INC	=%%%%
 
 UNAME = $(shell uname)
-CC	= gcc
+CC	= cc
 ifeq ($(UNAME),FreeBSD)
 	CC = clang
 endif
@@ -64,3 +64,4 @@ clean	:
 	rm -rf $(OBJ_DIR)/ $(NAME) $(NAME_UNAME) *~ core *.core
 
 .PHONY: all check show clean
+
