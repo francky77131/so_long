@@ -183,6 +183,30 @@ void	fill(t_vars *vars, int x, int y)
 	}
 }
 
+char	*ft_strdup(const char *s)
+{
+	char	*str;
+	int		len;
+	int		i;
+
+	if (!s)
+		return (NULL);
+	i = 0;
+	len = ft_strlen(s);
+	if (len == 0)
+		return (NULL);
+	str = malloc(sizeof(*s) * (len + 1));
+	if (!str)
+		return (NULL);
+	while (i < len)
+	{
+		str[i] = s[i];
+		i++;
+	}
+	str[i] = 0;
+	return (str);
+}
+
 char **cpmap(char **map)
 {
   int i;
@@ -192,7 +216,7 @@ char **cpmap(char **map)
   cpmap = malloc(sizeof(char *) * (ft_strlen(map[0]) + 1));
   while (map[i] != NULL)
   {
-    cpmap[i] = strdup(map[i]);     //ne pas oublier de mettre mon strdup !!!!!
+    cpmap[i] = ft_strdup(map[i]);     //ne pas oublier de mettre mon strdup !!!!!
 	i++;
   }
   cpmap[i] = NULL;
@@ -250,6 +274,48 @@ int	check_map(t_vars *vars)
 	return (0);
 }
 
+
+
+
+void	my_mlx_pixel_put(t_vars *vars, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = vars->addr + (y * vars->line_length + x * (vars->bits_per_pixel / 8));
+	*(unsigned int*)dst = color;
+}
+
+void	mlxinit(t_vars *vars, int x, int y)
+{
+	int color;
+	vars->mlx = mlx_init();
+	vars->mlx_win = mlx_new_window(vars->mlx, 1920, 1080, "Hello world!");
+	vars->img = mlx_new_image(vars->mlx, 1920, 1080);
+	vars->addr = mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian);
+	while (y < 75)
+	{
+		x = 5;
+		while (x < 75)
+		{
+			if (x <= 25)
+				color = BLUEHEX;
+			else if (x > 25 && x <= 50)
+				color = WHITEHEX;
+			else
+				color = REDHEX;
+			my_mlx_pixel_put(vars, x, y, color);
+			mlx_put_image_to_window(vars->mlx, vars->mlx_win, vars->img, 0, 0);
+			x++;
+		}
+		y++;
+	}
+	mlx_loop(vars->mlx);
+}
+
+
+
+
+
 int main(int ac, char **av)
 {
 	(void)ac;
@@ -278,6 +344,7 @@ int main(int ac, char **av)
 		printf("%s\n", vars->map[x]);
 		x++;
 	}
+	mlxinit(vars, 5, 5);
 	free(vars->mapline);
 	free_split(vars->map);
 	free(vars);

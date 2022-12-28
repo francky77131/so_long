@@ -28,7 +28,14 @@ typedef struct s_vars
 {
 	char	**map;
 	char	**cpmap;
+	char	*addr;
 	char	*mapline;
+	void	*mlx;
+	void	*mlx_win;
+	void	*img;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
 	int		begin_x;
 	int		begin_y;
 }	t_vars;
@@ -66,5 +73,13 @@ char	*ft_strjoin(char *s1, char *s2);
 # define MAGENTA "\x1b[35;1m"
 # define CYAN    "\x1b[36;1m"
 # define END    "\x1b[0m"
+
+# define REDHEX     0xFF0000
+# define GREENHEX   0x00FF00
+# define YELLOWHEX  0xFFFF00
+# define BLUEHEX    0x0000FF
+# define MAGENTAHEX 0xFFOOFF
+# define CYANHEX    0x00FFFF
+# define WHITEHEX   0xFFFFFF
 
 #endif
