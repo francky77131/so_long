@@ -31,13 +31,22 @@ typedef struct s_vars
 	char	*addr;
 	char	*mapline;
 	void	*mlx;
-	void	*mlx_win;
+	void	*win;
 	void	*img;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
+	int	exit_y;
+	int exit_x;
 	int		begin_x;
 	int		begin_y;
+	int 	len_x;
+	int		len_y;
+	void *player;
+	void *three;
+	void *collectible;
+	void *floor;
+	void *end;
 }	t_vars;
 
 /*GNL*/

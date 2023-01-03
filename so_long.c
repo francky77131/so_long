@@ -103,7 +103,11 @@ int	check_exit(t_vars *vars)
 		while (vars->map[y][x])
 		{
 			if (vars->map[y][x] == 'E')
+			{
+				vars->exit_y = y;
+				vars->exit_x = x;
 				exit++;
+			}
 			x++;
 		}
 		y++;
@@ -155,8 +159,10 @@ int	check_shape(t_vars *vars)
 	lenx = 0;
 	while (vars->map[leny])
 		leny++;
+	vars->len_y = leny * 32;
 	while (vars->map[0][lenx])
 		lenx++;
+	vars->len_x = lenx * 32;
 	while (vars->map[y])
 	{
 		x = 0;
@@ -274,37 +280,25 @@ int	check_map(t_vars *vars)
 	return (0);
 }
 
-
-
-
-void	my_mlx_pixel_put(t_vars *vars, int x, int y, int color)
+void	print_map(t_vars *vars)
 {
-	char	*dst;
-
-	dst = vars->addr + (y * vars->line_length + x * (vars->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
-}
-
-void	mlxinit(t_vars *vars, int x, int y)
-{
-	int color;
-	vars->mlx = mlx_init();
-	vars->mlx_win = mlx_new_window(vars->mlx, 1920, 1080, "Hello world!");
-	vars->img = mlx_new_image(vars->mlx, 1920, 1080);
-	vars->addr = mlx_get_data_addr(vars->img, &vars->bits_per_pixel, &vars->line_length, &vars->endian);
-	while (y < 75)
+	int y = 0;
+	int x = 0;
+	while (vars->map[y])
 	{
-		x = 5;
-		while (x < 75)
+		x = 0;
+		while (vars->map[y][x])
 		{
-			if (x <= 25)
-				color = BLUEHEX;
-			else if (x > 25 && x <= 50)
-				color = WHITEHEX;
-			else
-				color = REDHEX;
-			my_mlx_pixel_put(vars, x, y, color);
-			mlx_put_image_to_window(vars->mlx, vars->mlx_win, vars->img, 0, 0);
+			if (vars->map[y][x] == '1')
+				mlx_put_image_to_window(vars->mlx, vars->win, vars->three, x * 32, y * 32);
+			else if (vars->map[y][x] == '0')
+				mlx_put_image_to_window(vars->mlx, vars->win, vars->floor, x * 32, y * 32);
+			else if (vars->map[y][x] == 'E')
+				mlx_put_image_to_window(vars->mlx, vars->win, vars->end, x * 32, y * 32);
+			else if (vars->map[y][x] == 'C')
+				mlx_put_image_to_window(vars->mlx, vars->win, vars->collectible, x * 32, y * 32);
+			else if (vars->map[y][x] == 'P')
+				mlx_put_image_to_window(vars->mlx, vars->win, vars->player, x * 32, y * 32);
 			x++;
 		}
 		y++;
@@ -312,8 +306,160 @@ void	mlxinit(t_vars *vars, int x, int y)
 	mlx_loop(vars->mlx);
 }
 
+void    img_init(t_vars *vars)
+{
+    int    img_width;
+    int    img_height;
+
+	vars->mlx = mlx_init();
+	vars->win = mlx_new_window(vars->mlx, vars->len_x, vars->len_y, "Hello world!");
+    vars->player = mlx_xpm_file_to_image
+        (vars->mlx, "img/player.xpm",
+            &img_width, &img_height);
+    vars->three = mlx_xpm_file_to_image
+        (vars->mlx, "img/three.xpm",
+            &img_width, &img_height);
+    vars->collectible = mlx_xpm_file_to_image
+        (vars->mlx, "img/collectible.xpm",
+            &img_width, &img_height);
+    vars->end = mlx_xpm_file_to_image
+        (vars->mlx, "img/end.xpm",
+            &img_width, &img_height);
+    vars->floor = mlx_xpm_file_to_image
+        (vars->mlx, "img/floor.xpm",
+            &img_width, &img_height);
+}
+
+int	ft_close(t_vars *vars)
+{
+	mlx_destroy_image(vars->mlx, vars->three);
+	mlx_destroy_image(vars->mlx, vars->player);
+	mlx_destroy_image(vars->mlx, vars->collectible);
+	mlx_destroy_image(vars->mlx, vars->end);
+	mlx_destroy_image(vars->mlx, vars->floor);
+	mlx_destroy_window(vars->mlx, vars->win);
+	mlx_destroy_display(vars->mlx);
+	free(vars->mapline);
+	free_split(vars->map);
+	free(vars);
+	exit(0);
+}
 
 
+int loop(t_vars *vars)
+{
+	print_map(vars);
+	return (0);
+}
+
+int	ft_putchar(char c)
+{
+	write(1, &c, 1);
+	return (1);
+}
+
+int	ft_putstr(const char *str)
+{
+	int	i;
+
+	i = -1;
+	if (!str)
+		str = "(null)";
+	while (str[++i])
+		ft_putchar(str[i]);
+	return (i);
+}
+
+
+void	ft_putnbr(int n)
+{
+	long int	toto;
+
+	toto = n;
+	if (toto < 0)
+	{
+		write(1, "-", 1);
+		toto *= -1;
+	}
+	if (toto >= 10)
+	{
+		ft_putnbr(toto / 10);
+		ft_putnbr(toto % 10);
+	}
+	if (toto < 10)
+	{
+		toto = toto + '0';
+		write(1, &toto, 1);
+	}
+}
+
+void	move_count(void)
+{
+	static int	move = 0;
+
+	ft_putstr(BLUE);
+	ft_putnbr(++move);
+	ft_putstr(CYAN" moves\n"END);
+	
+}
+
+int coin_count(t_vars *vars)
+{
+	int i;
+	int y;
+	int x;
+
+	y = 0;
+	i = 0;
+	while (vars->map[y])
+	{
+		x = 0;
+		while(vars->map[y][x])
+		{
+			if (vars->map[y][x] == 'C')
+				i++;
+			x++;
+		}
+		y++;
+	}
+	return (i);
+}
+
+void ft_move(t_vars *vars, int updown, int leftright)
+{
+	check_player(vars);
+	check_exit(vars);
+	if (vars->map[vars->begin_y][vars->begin_x] == 'P' && vars->map[vars->begin_y + updown][vars->begin_x + leftright] != '1')
+	{
+		if (vars->begin_x == vars->exit_x && vars->begin_y == vars->exit_y)
+			vars->map[vars->begin_y][vars->begin_x] = 'E';
+		else
+			vars->map[vars->begin_y][vars->begin_x] = '0';
+		if (vars->begin_x + leftright == vars->exit_x && vars->begin_y + updown == vars->exit_y && coin_count(vars) == 0)
+			ft_close(vars);
+		else
+		{
+			vars->map[vars->begin_y + updown][vars->begin_x + leftright] = 'P';
+			move_count();
+		}
+		return ;
+	} 
+}
+
+int		key_hook(int keycode, t_vars *vars)
+{
+	if (keycode == 119)
+		ft_move(vars, -1, 0);
+	else if(keycode == 97)
+		ft_move(vars, 0, -1);
+	else if(keycode == 115)
+		ft_move(vars, 1, 0);
+	else if(keycode == 100)
+		ft_move(vars, 0, 1);
+	else if(keycode == 65307)
+		ft_close(vars);
+	return (0);
+}
 
 
 int main(int ac, char **av)
@@ -338,15 +484,15 @@ int main(int ac, char **av)
 		close(fd);
 		return (0);	
 	}
-	int x = 0;
-	while (vars->map[x])
-	{
-		printf("%s\n", vars->map[x]);
-		x++;
-	}
-	mlxinit(vars, 5, 5);
-	free(vars->mapline);
-	free_split(vars->map);
-	free(vars);
-	close(fd);
+	img_init(vars);
+	//print_map(vars);
+	mlx_key_hook(vars->win, key_hook, vars);
+	mlx_hook(vars->win, 17, 0, ft_close, vars);
+	mlx_loop_hook(vars->mlx, loop, vars);
+	loop(vars);
+	ft_close(vars);
+	// free(vars->mapline);
+	// free_split(vars->map);
+	// free(vars);
+	// close(fd);
 }
