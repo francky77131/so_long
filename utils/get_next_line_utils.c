@@ -6,11 +6,11 @@
 /*   By: frgojard <frgojard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 12:53:10 by frgojard          #+#    #+#             */
-/*   Updated: 2022/12/26 09:51:36 by frgojard         ###   ########.fr       */
+/*   Updated: 2023/01/04 13:09:06 by frgojard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../so_long.h"
 
 char	*ft_strdup_gnl(char *s)
 {

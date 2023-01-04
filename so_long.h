@@ -6,13 +6,13 @@
 /*   By: frgojard <frgojard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 19:00:00 by frgojard          #+#    #+#             */
-/*   Updated: 2022/12/26 14:21:18 by frgojard         ###   ########.fr       */
+/*   Updated: 2023/01/04 17:36:25 by frgojard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SO_LONG_H
 # define SO_LONG_H
-# include "./minilibx-linux/mlx.h"
+# include "./mlx/mlx.h"
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -71,9 +71,19 @@ char	**free_tab(char **tab, size_t size);
 char	**ft_split(const char *s, char c);
 void	free_split(char **args);
 
-/*Ft_strjoin*/
+/*utils*/
 char	*ft_strjoin(char *s1, char *s2);
+void	ft_putnbr(int n);
+char	*ft_strdup(const char *s);
+int	ft_putchar(char c);
+int	ft_putstr(const char *str);
 
+/*parsing*/
+int	check_collectible(t_vars *vars);
+int	check_exit(t_vars *vars);
+int	check_player(t_vars *vars);
+int	check_shape(t_vars *vars);
+int	check_wall(t_vars *vars);
 
 # define RED     "\x1b[31;1m"
 # define GREEN   "\x1b[32;1m"
@@ -82,13 +92,5 @@ char	*ft_strjoin(char *s1, char *s2);
 # define MAGENTA "\x1b[35;1m"
 # define CYAN    "\x1b[36;1m"
 # define END    "\x1b[0m"
-
-# define REDHEX     0xFF0000
-# define GREENHEX   0x00FF00
-# define YELLOWHEX  0xFFFF00
-# define BLUEHEX    0x0000FF
-# define MAGENTAHEX 0xFFOOFF
-# define CYANHEX    0x00FFFF
-# define WHITEHEX   0xFFFFFF
 
 #endif

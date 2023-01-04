@@ -6,14 +6,14 @@
 /*   By: frgojard <frgojard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 12:52:02 by frgojard          #+#    #+#             */
-/*   Updated: 2022/12/26 10:04:22 by frgojard         ###   ########.fr       */
+/*   Updated: 2023/01/04 19:11:38 by frgojard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../so_long.h"
 
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 5
+# define BUFFER_SIZE 10
 #endif
 
 size_t	ft_strlen(const char *s)

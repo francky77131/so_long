@@ -6,23 +6,33 @@
 #    By: frgojard <frgojard@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/14 14:20:55 by frgojard          #+#    #+#              #
-#    Updated: 2022/12/26 11:01:32 by frgojard         ###   ########.fr        #
+#    Updated: 2023/01/04 17:38:04 by frgojard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = so_long
 
 SRCS =    so_long.c \
-get_next_line.c \
-get_next_line_utils.c \
-split.c \
-ft_strjoin.c \
+./utils/get_next_line.c \
+./utils/get_next_line_utils.c \
+./utils/split.c \
+./utils/ft_strjoin.c \
+./utils/ft_putnbr.c \
+./utils/ft_putstr.c \
+./utils/ft_putchar.c \
+./utils/ft_strdup.c \
+./parsing/check_collectible.c \
+./parsing/check_exit.c \
+./parsing/check_player.c \
+./parsing/check_wall.c \
+./parsing/check_shape.c \
+
 
 
 OBJS = $(SRCS:.c=.o)
 
 # /* ~~~~~~~ INCLUDING MINILIBX ~~~~~~~ */
-MLX_DIR = minilibx-linux
+MLX_DIR = mlx
 MLX_MAKE = Makefile
 MLX_PATH = ${MLX_DIR}/libmlx.a
 

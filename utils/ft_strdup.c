@@ -1,42 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: frgojard <frgojard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/12 11:03:36 by frgojard          #+#    #+#             */
-/*   Updated: 2022/12/26 11:01:12 by frgojard         ###   ########.fr       */
+/*   Created: 2023/01/04 12:49:48 by frgojard          #+#    #+#             */
+/*   Updated: 2023/01/04 13:09:12 by frgojard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../so_long.h"
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strdup(const char *s)
 {
-	int		i;
-	int		j;
 	char	*str;
+	int		len;
+	int		i;
 
-	i = 0;
-	j = 0;
-	if (!s1 || !s2)
+	if (!s)
 		return (NULL);
-	str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	i = 0;
+	len = ft_strlen(s);
+	if (len == 0)
+		return (NULL);
+	str = malloc(sizeof(*s) * (len + 1));
 	if (!str)
 		return (NULL);
-	while (s1[i])
+	while (i < len)
 	{
-		str[i] = s1[i];
+		str[i] = s[i];
 		i++;
-	}
-	while (s2[j])
-	{
-		str[i] = s2[j];
-		i++;
-		j++;
 	}
 	str[i] = 0;
-	free(s1);
 	return (str);
 }

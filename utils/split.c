@@ -6,11 +6,11 @@
 /*   By: frgojard <frgojard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 02:50:07 by frgojard          #+#    #+#             */
-/*   Updated: 2022/12/26 10:53:53 by frgojard         ###   ########.fr       */
+/*   Updated: 2023/01/04 18:59:42 by frgojard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../so_long.h"
 
 size_t	count_words(const char *s, char c)
 {

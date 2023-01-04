@@ -6,7 +6,7 @@
 /*   By: frgojard <frgojard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/21 15:29:39 by frgojard          #+#    #+#             */
-/*   Updated: 2022/12/26 14:35:15 by frgojard         ###   ########.fr       */
+/*   Updated: 2023/01/04 19:06:04 by frgojard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ char	*get_map(int fd)
 	if (mapgnl == NULL)
 	{
 		mapgnl = get_next_line(fd);
+		if (mapgnl == NULL)
+			return (NULL);
 		map = ft_strdup_gnl(mapgnl);
 		free(mapgnl);
 	}
@@ -37,146 +39,6 @@ char	*get_map(int fd)
 	return (map);
 }
 
-int	check_player(t_vars *vars)
-{
-	int	x;
-	int	y;
-	int player;
-
-	y = 0;
-	player = 0;
-	while (vars->map[y])
-	{
-		x = 0;
-		while (vars->map[y][x])
-		{
-			if (vars->map[y][x] == 'P')
-			{
-				vars->begin_y = y;
-				vars->begin_x = x;
-				player++;
-			}
-			x++;
-		}
-		y++;
-	}
-	if (player != 1)
-		return (1);
-	return (0);
-}
-
-int	check_collectible(t_vars *vars)
-{
-	int	x;
-	int	y;
-	int collectible;
-
-	y = 0;
-	collectible = 0;
-	while (vars->map[y])
-	{
-		x = 0;
-		while (vars->map[y][x])
-		{
-			if (vars->map[y][x] == 'C')
-				collectible++;
-			x++;
-		}
-		y++;
-	}
-	if (collectible == 0)
-		return (1);
-	return (0);
-}
-
-int	check_exit(t_vars *vars)
-{
-	int	x;
-	int	y;
-	int exit;
-
-	y = 0;
-	exit = 0;
-	while (vars->map[y])
-	{
-		x = 0;
-		while (vars->map[y][x])
-		{
-			if (vars->map[y][x] == 'E')
-			{
-				vars->exit_y = y;
-				vars->exit_x = x;
-				exit++;
-			}
-			x++;
-		}
-		y++;
-	}
-	if (exit != 1)
-		return (1);
-	return (0);
-}
-
-int	check_wall(t_vars *vars)
-{
-	int	x;
-	int	y;
-	int lenx;
-
-	lenx = -1;
-	y = 0;
-	x = 0;
-	while (vars->map[0][++lenx])
-	{
-		if (vars->map[0][lenx] != '1')
-			return (1);
-	}
-	lenx--;
-	while (vars->map[++y])
-	{
-		if (vars->map[y][x] != '1' || vars->map[y][lenx] != '1')
-			return (1);
-	}
-	lenx = -1;
-	while (vars->map[y - 1][++lenx])
-	{
-		if (vars->map[y - 1][lenx] != '1')
-			return (1);
-	}
-	return (0);
-}
-
-int	check_shape(t_vars *vars)
-{
-	int	x;
-	int	y;
-	int	lenx;
-	int	leny;
-
-	y = 1;
-	x = 0;
-	leny = 0;
-	lenx = 0;
-	while (vars->map[leny])
-		leny++;
-	vars->len_y = leny * 32;
-	while (vars->map[0][lenx])
-		lenx++;
-	vars->len_x = lenx * 32;
-	while (vars->map[y])
-	{
-		x = 0;
-		while (vars->map[y][x])
-			x++;
-		if (x != lenx)
-			return (1);
-		y++;
-	}
-	if (y != leny)
-		return (1);
-	return (0);
-}
-
 void	fill(t_vars *vars, int x, int y)
 {
 	if (vars->cpmap[y][x] == '0' || vars->cpmap[y][x] == 'P' || vars->cpmap[y][x] == 'C' || vars->cpmap[y][x] == 'E')
@@ -187,30 +49,6 @@ void	fill(t_vars *vars, int x, int y)
 		fill(vars, x, y + 1);
 		fill(vars, x, y - 1);
 	}
-}
-
-char	*ft_strdup(const char *s)
-{
-	char	*str;
-	int		len;
-	int		i;
-
-	if (!s)
-		return (NULL);
-	i = 0;
-	len = ft_strlen(s);
-	if (len == 0)
-		return (NULL);
-	str = malloc(sizeof(*s) * (len + 1));
-	if (!str)
-		return (NULL);
-	while (i < len)
-	{
-		str[i] = s[i];
-		i++;
-	}
-	str[i] = 0;
-	return (str);
 }
 
 char **cpmap(char **map)
@@ -303,7 +141,6 @@ void	print_map(t_vars *vars)
 		}
 		y++;
 	}
-	mlx_loop(vars->mlx);
 }
 
 void    img_init(t_vars *vars)
@@ -340,6 +177,7 @@ int	ft_close(t_vars *vars)
 	mlx_destroy_window(vars->mlx, vars->win);
 	mlx_destroy_display(vars->mlx);
 	free(vars->mapline);
+	free(vars->mlx);
 	free_split(vars->map);
 	free(vars);
 	exit(0);
@@ -352,47 +190,6 @@ int loop(t_vars *vars)
 	return (0);
 }
 
-int	ft_putchar(char c)
-{
-	write(1, &c, 1);
-	return (1);
-}
-
-int	ft_putstr(const char *str)
-{
-	int	i;
-
-	i = -1;
-	if (!str)
-		str = "(null)";
-	while (str[++i])
-		ft_putchar(str[i]);
-	return (i);
-}
-
-
-void	ft_putnbr(int n)
-{
-	long int	toto;
-
-	toto = n;
-	if (toto < 0)
-	{
-		write(1, "-", 1);
-		toto *= -1;
-	}
-	if (toto >= 10)
-	{
-		ft_putnbr(toto / 10);
-		ft_putnbr(toto % 10);
-	}
-	if (toto < 10)
-	{
-		toto = toto + '0';
-		write(1, &toto, 1);
-	}
-}
-
 void	move_count(void)
 {
 	static int	move = 0;
@@ -400,7 +197,6 @@ void	move_count(void)
 	ft_putstr(BLUE);
 	ft_putnbr(++move);
 	ft_putstr(CYAN" moves\n"END);
-	
 }
 
 int coin_count(t_vars *vars)
@@ -458,16 +254,18 @@ int		key_hook(int keycode, t_vars *vars)
 		ft_move(vars, 0, 1);
 	else if(keycode == 65307)
 		ft_close(vars);
+	print_map(vars);
 	return (0);
 }
 
 
 int main(int ac, char **av)
 {
-	(void)ac;
 	int	fd;
 	t_vars	*vars;
 
+	if (ac != 2)
+		return (0);
 	fd = open(av[1], O_RDONLY);
 	if (fd < 0)
 		return (1);
@@ -475,24 +273,31 @@ int main(int ac, char **av)
 	if (!vars)
 		return (1);
 	vars->mapline = get_map(fd);
+	if (vars->mapline == NULL)
+	{
+		free(vars);
+		close(fd);
+		return (0);
+	}
+	close(fd);
 	vars->map = ft_split(vars->mapline, '\n');
+	if (vars->map == NULL)
+	{
+		free(vars->mapline);
+		free(vars);
+		return (0);
+	}
 	if (check_map(vars) == 1)
 	{
 		free(vars->mapline);
 		free_split(vars->map);
 		free(vars);
-		close(fd);
 		return (0);	
 	}
 	img_init(vars);
-	//print_map(vars);
+	print_map(vars);
 	mlx_key_hook(vars->win, key_hook, vars);
 	mlx_hook(vars->win, 17, 0, ft_close, vars);
-	mlx_loop_hook(vars->mlx, loop, vars);
-	loop(vars);
-	ft_close(vars);
-	// free(vars->mapline);
-	// free_split(vars->map);
-	// free(vars);
-	// close(fd);
+	mlx_loop(vars->mlx);
+	return (0);
 }
