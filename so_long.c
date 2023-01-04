@@ -51,13 +51,13 @@ void	fill(t_vars *vars, int x, int y)
 	}
 }
 
-char **cpmap(char **map)
+char **cpmap(char **map, t_vars *vars)
 {
   int i;
   char **cpmap;
 
   i = 0;
-  cpmap = malloc(sizeof(char *) * (ft_strlen(map[0]) + 1));
+  cpmap = malloc(sizeof(char *) * (vars->len_y + 1));
   while (map[i] != NULL)
   {
     cpmap[i] = ft_strdup(map[i]);     //ne pas oublier de mettre mon strdup !!!!!
@@ -90,7 +90,7 @@ int search_path(char **map)
 
 int	flood_fill(t_vars *vars)
 {
-	vars->cpmap = cpmap(vars->map);
+	vars->cpmap = cpmap(vars->map, vars);
 	fill(vars, vars->begin_x, vars->begin_y);
 	if (search_path(vars->cpmap) == 1)
 	{
