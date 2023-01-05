@@ -84,6 +84,21 @@ int	check_exit(t_vars *vars);
 int	check_player(t_vars *vars);
 int	check_shape(t_vars *vars);
 int	check_wall(t_vars *vars);
+void	fill(t_vars *vars, int x, int y);
+int	flood_fill(t_vars *vars);
+char	*get_map(int fd);
+int	check_map(t_vars *vars);
+char **cpmap(char **map, t_vars *vars);
+int search_path(char **map);
+
+/*hook*/
+int		key_hook(int keycode, t_vars *vars);
+void ft_move(t_vars *vars, int updown, int leftright);
+void	move_count(void);
+int coin_count(t_vars *vars);
+
+void	print_map(t_vars *vars);
+int	ft_close(t_vars *vars);
 
 # define RED     "\x1b[31;1m"
 # define GREEN   "\x1b[32;1m"

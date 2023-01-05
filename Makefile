@@ -26,6 +26,10 @@ SRCS =    so_long.c \
 ./parsing/check_player.c \
 ./parsing/check_wall.c \
 ./parsing/check_shape.c \
+./parsing/get_map.c \
+./parsing/check_map.c \
+./parsing/flood_fill.c \
+./hook/hook.c \
 
 
 
