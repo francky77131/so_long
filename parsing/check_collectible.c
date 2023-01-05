@@ -6,7 +6,7 @@
 /*   By: frgojard <frgojard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 14:52:40 by frgojard          #+#    #+#             */
-/*   Updated: 2023/01/04 14:54:24 by frgojard         ###   ########.fr       */
+/*   Updated: 2023/01/05 14:51:33 by frgojard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	check_collectible(t_vars *vars)
 {
 	int	x;
 	int	y;
-	int collectible;
+	int	collectible;
 
 	y = 0;
 	collectible = 0;

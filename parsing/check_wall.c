@@ -6,18 +6,17 @@
 /*   By: frgojard <frgojard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 14:52:51 by frgojard          #+#    #+#             */
-/*   Updated: 2023/01/04 14:55:29 by frgojard         ###   ########.fr       */
+/*   Updated: 2023/01/05 14:46:31 by frgojard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../so_long.h"
 
-
 int	check_wall(t_vars *vars)
 {
 	int	x;
 	int	y;
-	int lenx;
+	int	lenx;
 
 	lenx = -1;
 	y = 0;

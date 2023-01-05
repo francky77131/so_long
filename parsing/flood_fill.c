@@ -1,25 +1,41 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   flood_fill.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: frgojard <frgojard@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/05 14:49:09 by frgojard          #+#    #+#             */
+/*   Updated: 2023/01/05 15:29:23 by frgojard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../so_long.h"
 
-char **cpmap(char **map, t_vars *vars)
+char	**cpmap(char **map, t_vars *vars)
 {
-  int i;
-  char **cpmap;
+	int		i;
+	char	**cpmap;
 
-  i = 0;
-  cpmap = malloc(sizeof(char *) * (vars->len_y + 1));
-  while (map[i] != NULL)
-  {
-    cpmap[i] = ft_strdup(map[i]);     //ne pas oublier de mettre mon strdup !!!!!
-	i++;
-  }
-  cpmap[i] = NULL;
-  return (cpmap);
+	i = 0;
+	cpmap = malloc(sizeof(char *) * (vars->len_y + 1));
+	if (!cpmap)
+		return (NULL);
+	while (map[i] != NULL)
+	{
+		cpmap[i] = ft_strdup(map[i]);
+		if (!cpmap)
+			return (NULL);
+		i++;
+	}
+	cpmap[i] = NULL;
+	return (cpmap);
 }
 
-int search_path(char **map)
+int	search_path(char **map)
 {
 	int	y;
-	int x;
+	int	x;
 
 	y = 0;
 	x = 0;
@@ -28,7 +44,7 @@ int search_path(char **map)
 		x = 0;
 		while (map[y][x])
 		{
-			if (map[y][x] != '1' && map[y][x] != 'o' )
+			if (map[y][x] != '1' && map[y][x] != 'o' && map[y][x] != '0' )
 				return (1);
 			x++;
 		}
@@ -37,10 +53,10 @@ int search_path(char **map)
 	return (0);
 }
 
-
 void	fill(t_vars *vars, int x, int y)
 {
-	if (vars->cpmap[y][x] == '0' || vars->cpmap[y][x] == 'P' || vars->cpmap[y][x] == 'C' || vars->cpmap[y][x] == 'E')
+	if (vars->cpmap[y][x] == '0' || vars->cpmap[y][x] == 'P'
+		|| vars->cpmap[y][x] == 'C' || vars->cpmap[y][x] == 'E')
 	{
 		vars->cpmap[y][x] = 'o';
 		fill(vars, x + 1, y);

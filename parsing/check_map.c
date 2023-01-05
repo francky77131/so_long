@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_map.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: frgojard <frgojard@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/05 14:46:58 by frgojard          #+#    #+#             */
+/*   Updated: 2023/01/05 14:54:17 by frgojard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../so_long.h"
 
 int	check_map(t_vars *vars)
@@ -13,6 +25,6 @@ int	check_map(t_vars *vars)
 	if (check_exit(vars) == 1)
 		return (write (2, "Error : more or less than 1 exit\n", 34), 1);
 	if (flood_fill(vars) == 1)
-	 	return (write (2, "Error : false exit path\n", 25), 1);
+		return (write (2, "Error : false exit path\n", 25), 1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: frgojard <frgojard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 14:52:43 by frgojard          #+#    #+#             */
-/*   Updated: 2023/01/04 14:53:54 by frgojard         ###   ########.fr       */
+/*   Updated: 2023/01/05 14:46:46 by frgojard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	check_player(t_vars *vars)
 {
 	int	x;
 	int	y;
-	int player;
+	int	player;
 
 	y = 0;
 	player = 0;
